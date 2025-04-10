@@ -1,0 +1,17 @@
+-- AlterTable
+ALTER TABLE "User" ADD COLUMN     "Industry" INTEGER,
+ADD COLUMN     "billingAddress" TEXT,
+ADD COLUMN     "billingApartmentSuite" TEXT,
+ADD COLUMN     "billingCity" TEXT,
+ADD COLUMN     "billingCountry" TEXT,
+ADD COLUMN     "billingState" TEXT,
+ADD COLUMN     "billingZipcode" TEXT,
+ADD COLUMN     "companyName" TEXT,
+ADD COLUMN     "companySize" INTEGER,
+ADD COLUMN     "companyWebsite" TEXT,
+ADD COLUMN     "founded" TEXT,
+ADD COLUMN     "is_hiring_manager" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "location" TEXT,
+ADD COLUMN     "managerEmail" TEXT,
+ADD COLUMN     "managerName" TEXT,
+ADD COLUMN     "managerPhone" TEXT;

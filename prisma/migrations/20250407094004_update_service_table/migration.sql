@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Service" ALTER COLUMN "image" DROP NOT NULL,
+ALTER COLUMN "base_price" DROP NOT NULL,
+ALTER COLUMN "work_video" DROP NOT NULL,
+ALTER COLUMN "description" DROP NOT NULL;

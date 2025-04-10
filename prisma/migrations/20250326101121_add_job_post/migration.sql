@@ -1,0 +1,30 @@
+-- CreateTable
+CREATE TABLE "JobPost" (
+    "id" SERIAL NOT NULL,
+    "jobTitle" TEXT NOT NULL,
+    "jobDescription" TEXT NOT NULL,
+    "jobType" TEXT,
+    "jobCategories" TEXT[],
+    "location" TEXT,
+    "salaryMin" DECIMAL(10,2),
+    "salaryMax" DECIMAL(10,2),
+    "experience" INTEGER,
+    "qualifications" TEXT[],
+    "careerLevels" TEXT[],
+    "jobSkills" TEXT[],
+    "gender" TEXT,
+    "companyName" TEXT,
+    "companyWebsite" TEXT,
+    "videoUrl" TEXT,
+    "videoImage" TEXT,
+    "tags" TEXT[],
+    "applyLink" TEXT,
+    "focusKeyphrase" TEXT,
+    "seoTitle" TEXT,
+    "metaDescription" TEXT,
+    "trackSeo" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "JobPost_pkey" PRIMARY KEY ("id")
+);

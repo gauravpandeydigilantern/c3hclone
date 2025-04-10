@@ -1,0 +1,322 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String  @id @default(uuid()) // Unique ID
+  name            String
+  email           String  @unique
+  password        String
+  role            String  @default("admin")
+  country_code    String? // Nullable
+  phone           String? // Nullable
+  country         String? // Nullable
+  state           String? // Nullable
+  city            String? // Nullable
+  company_name    String? // Nullable
+  profile_image   String? // Nullable
+  is_hiring_manager Boolean @default(false)   
+  officialEmail  String? 
+  managerName  String?
+  managerEmail  String?
+  managerPhone  String?
+  companyName      String?
+  companyWebsite   String?
+  companySize     Int?
+  Industry      String?
+  founded    String?
+  location   String?
+  billingCountry String?
+  billingState String?
+  billingCity String?
+  billingZipcode String?
+  billingAddress String?
+  billingApartmentSuite  String?
+  expiryDate  DateTime? 
+  isFeatured      Boolean @default(false)   
+  status      Boolean @default(true)   
+  createdAt       DateTime @default(now()) // Timestamp
+
+  savedCandidates SaveCandidateUser[] @relation("UserSavedCandidates")
+  savedBy         SaveCandidateUser[] @relation("UserIsSaved")
+}
+
+model Admin {
+  id       String  @id @default(uuid())
+  name     String
+  email    String  @unique
+  password String
+  createdAt DateTime @default(now())
+}
+
+model Testimonial {
+  id          String   @id @default(uuid())
+  name        String
+  position    String
+  description String
+  image       String
+  status      Boolean @default(true)   
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Package {
+  id            String  @id @default(uuid())
+  package_name  String
+  description   String?
+  max_job_posts Int
+  is_premium    Boolean
+  max_portfolio Int
+  price         Float
+  status        Boolean @default(true)   
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Service {
+  id          String  @id @default(uuid())
+  name        String
+  image       String?
+  base_price  Float?
+  work_video  String?
+  description String?
+  status        Boolean @default(true)   
+  createdAt   DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+}
+
+model SiteManagement {
+  id          String  @id @default(uuid())
+  name        String   
+  facebook    String   
+  instagram   String   
+  xLink       String   
+  email       String  
+  banner      String? 
+  phone       String   
+  logo        String? 
+  address     String   
+  description String  
+  createdAt   DateTime @default(now()) 
+  updatedAt   DateTime @updatedAt     
+}
+
+model Conatct {
+  id          String  @id @default(uuid())
+  full_name   String
+  email       String
+  subject     String
+  message     String?
+  createdAt   DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model JobType {
+  id      String  @id @default(uuid())
+  name    String  @unique
+  status  Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model JobSkill {
+  id        String  @id @default(uuid())
+  name      String  @unique
+  status    Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Tag {
+  tag_id        String  @id @default(uuid())
+  name      String  @unique
+  status    Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CareerLevel {
+  career_level_id        String  @id @default(uuid())
+  name      String  @unique
+  status    Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model JobCategory {
+  id          String        @id @default(uuid())
+  name        String
+  icon        String
+  parent_id   String?       @default(uuid())
+  description String?    
+  status      Boolean @default(true)   
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  parent      JobCategory?  @relation("CategoryParent", fields: [parent_id], references: [id])
+  children    JobCategory[] @relation("CategoryParent")
+  
+  @@index([parent_id])
+}
+
+model Qualification {
+  id      String  @id @default(uuid())
+  name    String  @unique
+  status  Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model JobPost {
+  id               String       @id @default(uuid())
+  user_id          String?       
+  // Job Details
+  jobTitle         String
+  jobDescription   String    @db.Text
+  jobType          String?
+  jobCategories    String[]
+  location         String?
+  country         String?
+  state           String?
+  city            String?
+  
+  // Compensation
+  salaryCurrency   String?
+  salaryMin        Decimal?  @db.Decimal(10, 2)
+  salaryMax        Decimal?  @db.Decimal(10, 2)
+  
+  // Requirements
+  experience       Int?
+  qualifications   String[]
+  careerLevels     String[]
+  jobSkills        String[]
+  gender           String?
+  
+  // Company Details
+  companyName      String?
+  companyWebsite   String?
+  videoUrl         String?
+  videoImage       String?
+  addMedia         String?
+  
+  // Additional Fields
+  tags             String[]
+  applyLink        String?
+  
+  // SEO Fields
+  focusKeyphrase   String?
+  seoTitle         String?
+  metaDescription  String?
+  trackSeo         Boolean   @default(false)
+
+  expirationDate  DateTime? @db.Date
+  certifications   String?
+  jobSpecificDetails   String?
+  // Metadata
+  isFeatured      Boolean @default(false)   
+  saveDraft  Boolean @default(false)
+  isSaleryHide  Boolean @default(true)
+  status  Boolean @default(true)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+
+model SaveCandidateUser {
+  id               String       @id @default(uuid())
+  userId           String      
+  saveCandidateId  String      // The user who is being saveCandidated
+  createdAt        DateTime @default(now())
+
+  user            User  @relation("UserSavedCandidates", fields: [userId], references: [id])
+  saveCandidate   User  @relation("UserIsSaved", fields: [saveCandidateId], references: [id])
+
+  @@unique([userId, saveCandidateId]) 
+}
+
+model ApplyJob {
+  id        String   @id @default(uuid())  // Unique identifier
+  name      String   // Applicant's name
+  email     String   // Applicant's email
+  phone     String   // Applicant's phone number
+  jobId     String   // Foreign key referencing JobPost (assuming it's a UUID)
+  resume    String   // File path to resume
+  createdAt DateTime @default(now())      // Timestamp for when the application was created
+}
+
+
+model Industry {
+  industry_id     String  @id @default(uuid())
+  name      String  @unique
+  status    Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BlacklistedToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  createdAt DateTime @default(now())
+}
+
+model ServicePost {
+  id                String  @id @default(uuid())
+  userId            String?
+
+  // Basic Service Information
+  serviceTitle      String   @db.VarChar(100)
+  serviceCategory   String   @db.VarChar(50)
+  serviceLocation   String   @db.VarChar(100)
+  expertiseDesc     String   @db.Text
+  phoneNumber       String   @db.VarChar(20)
+  aboutService      String   @db.Text
+  
+  // Media and Visuals
+  thumbnailImages String?  
+  videoUrl          String?  
+  mediaImages         String?
+  
+  // Pricing Information
+  pricingType       PricingType?
+  startingPrice     Decimal?    @db.Decimal(10, 2)
+  priceCurrency     String?     @default("USD") @db.VarChar(6)
+  pricingDescription String?    @db.Text
+  
+  // Metadata
+  highlights        Json?     // Array of highlight strings
+  keywords          Json?     // Array of keyword strings
+  faq               Json?     // Array of FAQ objects {question: string, answer: string}
+  
+  // Timestamps
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  // Status and Visibility
+  isActive          Boolean   @default(true)
+  isFeatured        Boolean   @default(false)
+  viewCount         Int       @default(0)
+
+  @@index([serviceCategory])
+  @@index([serviceLocation])
+  @@index([serviceTitle])
+}
+
+enum PricingType {
+  FIXED_PRICE
+  PER_HOUR
+  REMOTE
+  PER_SESSION
+  FREELANCE
+}
